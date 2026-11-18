@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SV Studio — Bespoke Web Experiences</title>
+  <meta name="description" content="Websites crafted to make clients choose you first. Real Estate, Luxury Resorts, Open-Air Cafés & Flagship Retail Stores." />
+  <meta name="theme-color" content="#050507" />
+
+  <!-- Built-In SV. Black & Platinum/Cyan Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23050507'/%3E%3Crect x='16' y='16' width='480' height='480' rx='98' fill='none' stroke='%2300e5ff' stroke-opacity='0.35' stroke-width='8'/%3E%3Ctext x='46%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='230' fill='%23ffffff'%3ESV%3C/text%3E%3Ccircle cx='418' cy='336' r='24' fill='%2300e5ff'/%3E%3C/svg%3E" />
+
+  <!-- WhatsApp & Social Share Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SV Studio — Bespoke Web Experiences" />
+  <meta property="og:description" content="Websites crafted to make clients choose you first. Real Estate, Luxury Resorts, Open-Air Cafés & Flagship Showrooms." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&h=630&q=80" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SV Studio — Bespoke Web Experiences" />
+  <meta name="twitter:description" content="High-converting websites for Real Estate, Luxury Resorts, Open-Air Cafés & Flagship Showrooms." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&h=630&q=80" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-void: #050507;
+      --border-subtle: rgba(255,255,255,0.1); --border-strong: rgba(255,255,255,0.22);
+      --text-primary: #f5f5f7; --text-secondary: #b0b4c0; --text-muted: #707482;
+      --cyan: #00e5ff; --emerald: #10b981; --amber: #f59e0b;
+      --f-disp: 'Syne', sans-serif; --f-serif: 'Cormorant Garamond', Georgia, serif;
+      --f-sans: 'Plus Jakarta Sans', -apple-system, sans-serif; --f-mono: 'JetBrains Mono', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { scroll-behavior: smooth; background: var(--bg-void); color: var(--text-primary); font-family: var(--f-sans); overflow-x: hidden; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body.lock-scroll { overflow: hidden; }
+
+    /* Cinematic Background Wall + Particle Constellation */
+    .bg-wall { position: fixed; inset: 0; z-index: -3; overflow: hidden; background: #050507; pointer-events: none; }
+    .bg-slide {
+      position: absolute; inset: -4%;
+      background-size: cover; background-position: center;
+      opacity: 0; transform: scale(1.02);
+      transition: opacity 1.8s ease-in-out, transform 8s ease-out;
+      filter: saturate(0.85) contrast(1.08);
+    }
+    .bg-slide.active { opacity: 0.36; transform: scale(1.1); }
+    .bg-wall-scrim {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% 15%, rgba(5,5,7,0.52) 0%, rgba(5,5,7,0.88) 75%, rgba(5,5,7,0.97) 100%),
+        linear-gradient(180deg, rgba(5,5,7,0.6) 0%, rgba(5,5,7,0.84) 55%, rgba(5,5,7,0.96) 100%);
+    }
+    .tech-grid-overlay {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    #particleCanvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.7; }
+
+    .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+    .mono-tag { font-family: var(--f-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 8px; }
+    .section-header { margin-bottom: 48px; }
+    .section-title { font-family: var(--f-disp); font-size: clamp(32px, 5vw, 50px); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em; margin-top: 12px; background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-sub { color: var(--text-secondary); font-size: 17px; max-width: 620px; margin-top: 12px; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 28px; border-radius: 100px; font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer; transition: all 0.3s; border: none; font-family: var(--f-sans); }
+    .btn-primary { background: #fff; color: #050507; box-shadow: 0 0 25px rgba(255,255,255,0.18); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 35px rgba(255,255,255,0.32); }
+    .btn-ghost { background: rgba(15,17,24,0.65); color: var(--text-primary); border: 1px solid var(--border-strong); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); transform: translateY(-2px); }
+    .btn-amber { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #09090b; box-shadow: 0 8px 30px rgba(245,158,11,0.28); }
+    .btn-amber:hover { transform: translateY(-2px); box-shadow: 0 12px 38px rgba(245,158,11,0.45); }
+
+    /* Navbar */
+    .navbar-wrap { position: fixed; top: 18px; left: 0; right: 0; z-index: 100; padding: 0 20px; }
+    .navbar { max-width: 1120px; margin: 0 auto; background: rgba(10,11,16,0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-subtle); border-radius: 100px; padding: 10px 14px 10px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 20px 50px rgba(0,0,0,0.55); }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+    .brand-logo { font-family: var(--f-disp); font-weight: 800; font-size: 24px; letter-spacing: -0.04em; background: linear-gradient(135deg, #fff 20%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 11px; color: #a7f3d0; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); padding: 4px 10px; border-radius: 100px; }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 8px var(--emerald); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.3);} }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { padding: 10px 20px; font-size: 13px; }
+    .mobile-toggle { display: none; background: none; border: 1px solid var(--border-subtle); color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; align-items: center; justify-content: center; font-size: 18px; }
+    .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(5,5,7,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--f-disp); font-size: 28px; color: #fff; text-decoration: none; }
+    .mobile-sticky-bar { display: none; position: fixed; bottom: 14px; left: 16px; right: 16px; z-index: 90; background: rgba(12,13,18,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid var(--border-strong); border-radius: 100px; padding: 8px 8px 8px 18px; align-items: center; justify-content: space-between; box-shadow: 0 15px 40px rgba(0,0,0,0.7); }
+    .mobile-sticky-bar span { font-family: var(--f-mono); font-size: 11px; color: #fff; }
+    .mobile-sticky-bar a { padding: 10px 18px; font-size: 13px; }
+
+    /* Hero */
+    .hero { padding: 150px 0 84px; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: 100px; background: rgba(15,17,24,0.65); backdrop-filter: blur(10px); border: 1px solid var(--border-subtle); font-family: var(--f-mono); font-size: 12px; color: var(--text-secondary); margin-bottom: 22px; }
+    .hero-badge span { color: var(--cyan); }
+    .hero h1 { font-family: var(--f-disp); font-size: clamp(36px, 5.4vw, 64px); font-weight: 800; line-height: 1.04; letter-spacing: -0.03em; margin-bottom: 22px; text-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+    .hero h1 .muted { color: #9ca3af; }
+    .hero h1 .highlight { background: linear-gradient(90deg, #fff 0%, #cbd5e1 60%, var(--cyan) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 18px; color: #cbd0dc; max-width: 560px; margin-bottom: 34px; }
+    .hero-desc strong { color: #fff; font-weight: 600; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 40px; }
+    .hero-stats { display: flex; gap: 36px; padding-top: 26px; border-top: 1px solid var(--border-subtle); }
+    .stat-item h3 { font-family: var(--f-disp); font-size: 28px; font-weight: 700; }
+    .stat-item p { font-family: var(--f-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); }
+
+    .wall-controller {
+      margin-top: 26px; display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      background: rgba(12,14,20,0.68); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle); padding: 8px 14px; border-radius: 100px;
+    }
+    .wall-label { font-family: var(--f-mono); font-size: 11px; color: var(--cyan); letter-spacing: 0.06em; }
+    .wall-dots { display: flex; gap: 6px; }
+    .wall-dot { width: 22px; height: 6px; border-radius: 100px; background: rgba(255,255,255,0.18); border: none; cursor: pointer; transition: all 0.35s; }
+    .wall-dot.active { width: 38px; background: var(--cyan); box-shadow: 0 0 12px rgba(0,229,255,0.6); }
+
+    .hero-showcase {
+      background: rgba(14,16,22,0.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-strong); border-radius: 20px; padding: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .showcase-topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 16px; }
+    .window-dots { display: flex; gap: 6px; }
+    .window-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .window-dots span:nth-child(1){background:#ef4444;} .window-dots span:nth-child(2){background:#f59e0b;} .window-dots span:nth-child(3){background:#10b981;}
+    .url-bar { font-family: var(--f-mono); font-size: 11px; color: var(--text-secondary); background: rgba(0,0,0,0.45); padding: 5px 14px; border-radius: 100px; border: 1px solid var(--border-subtle); }
+    .live-cards-stack { display: flex; flex-direction: column; gap: 12px; }
+    .mini-metric-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; transition: transform 0.3s, border-color 0.3s; }
+    .mini-metric-card:hover { transform: translateX(4px); border-color: rgba(255,255,255,0.28); }
+    .mini-left { display: flex; align-items: center; gap: 14px; }
+    .mini-icon { width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid var(--border-subtle); }
+    .mini-left h4 { font-size: 14px; font-weight: 600; }
+    .mini-left span { font-family: var(--f-mono); font-size: 11px; color: var(--text-secondary); }
+    .mini-badge { font-family: var(--f-mono); font-size: 11px; font-weight: 600; white-space: nowrap; color: var(--emerald); background: rgba(16,185,129,0.12); padding: 5px 10px; border-radius: 6px; }
+    .code-snippet-box { margin-top: 14px; background: rgba(5,6,9,0.8); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px; font-family: var(--f-mono); font-size: 11.5px; color: #8b92a5; line-height: 1.7; overflow-x: auto; }
+    .code-key { color: var(--cyan); } .code-val { color: #e2e8f0; }
+
+    /* Marquee */
+    .marquee-wrap { border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); background: rgba(12,13,18,0.68); backdrop-filter: blur(12px); padding: 18px 0; overflow: hidden; display: flex; }
+    .marquee-track { display: flex; gap: 48px; white-space: nowrap; animation: scrollMarquee 26s linear infinite; }
+    .marquee-item { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.15em; color: var(--text-secondary); display: flex; align-items: center; gap: 48px; }
+    .marquee-item::after { content: "◆"; color: var(--cyan); font-size: 10px; }
+    @keyframes scrollMarquee { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+    section { padding: 92px 0; }
+    .spotlight-card {
+      position: relative; background: rgba(15,16,22,0.74);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle); border-radius: 20px; overflow: hidden;
+      transition: transform 0.35s, border-color 0.35s;
+    }
+    .spotlight-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(500px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(255,255,255,0.08), transparent 45%); opacity: 0; transition: opacity 0.35s; pointer-events: none; z-index: 1; }
+    .spotlight-card:hover::before { opacity: 1; }
+    .spotlight-card:hover { border-color: var(--border-strong); transform: translateY(-4px); }
+
+    /* Portfolio */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+    .filter-btn { background: rgba(15,17,24,0.7); backdrop-filter: blur(10px); border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 10px 20px; border-radius: 100px; font-family: var(--f-mono); font-size: 12px; cursor: pointer; transition: all 0.25s; }
+    .filter-btn.active { background: #fff; color: #050507; border-color: #fff; font-weight: 600; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .project-card { display: flex; flex-direction: column; cursor: pointer; }
+    .project-card.hidden { display: none; }
+    .project-preview { height: 265px; padding: 20px 20px 0; background: linear-gradient(180deg, rgba(25,27,35,0.75) 0%, rgba(13,14,19,0.9) 100%); border-bottom: 1px solid var(--border-subtle); overflow: hidden; display: flex; flex-direction: column; }
+    .mock-browser { flex: 1; background: #07080b; border: 1px solid rgba(255,255,255,0.14); border-bottom: none; border-radius: 12px 12px 0 0; padding: 14px; display: flex; flex-direction: column; gap: 12px; transition: transform 0.4s; }
+    .project-card:hover .mock-browser { transform: translateY(-6px); }
+    .mock-header { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 10px; color: var(--text-secondary); }
+    .mock-hero-box { flex: 1; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+
+    .theme-realestate { background: linear-gradient(180deg, rgba(12,13,18,0.32) 0%, rgba(10,11,15,0.9) 100%), url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=900&q=75') center/cover no-repeat; border: 1px solid rgba(212,175,55,0.38); }
+    .theme-hotel { background: linear-gradient(180deg, rgba(10,14,22,0.32) 0%, rgba(8,10,15,0.9) 100%), url('https://images.unsplash.com/photo-1700163458324-033a60254207?auto=format&fit=crop&w=900&q=75') center/cover no-repeat; border: 1px solid rgba(56,189,248,0.38); }
+    .theme-cafe { background: linear-gradient(180deg, rgba(15,13,10,0.3) 0%, rgba(10,9,8,0.88) 100%), url('https://images.unsplash.com/photo-1775360898461-9fc756e73b34?auto=format&fit=crop&w=900&q=75') center/cover no-repeat; border: 1px solid rgba(245,158,11,0.45); }
+    .theme-retail { background: linear-gradient(180deg, rgba(14,14,18,0.35) 0%, rgba(8,8,10,0.9) 100%), url('https://images.unsplash.com/photo-1782834294716-8e28c18bdba6?auto=format&fit=crop&w=900&q=75') center/cover no-repeat; border: 1px solid rgba(0,229,255,0.38); }
+
+    .mock-title { font-family: var(--f-disp); font-size: 20px; font-weight: 700; color: #fff; line-height: 1.2; text-shadow: 0 2px 14px rgba(0,0,0,0.9); }
+    .mock-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mock-pill { font-family: var(--f-mono); font-size: 10px; padding: 4px 10px; border-radius: 100px; background: rgba(10,10,14,0.78); backdrop-filter: blur(6px); color: #e4e4e7; }
+    .mock-pill.gold { color: #fde68a; background: rgba(212,175,55,0.22); border: 1px solid rgba(245,158,11,0.4); }
+    .mock-pill.cyan { color: #67e8f9; background: rgba(0,229,255,0.18); border: 1px solid rgba(0,229,255,0.35); }
+    .project-body { padding: 26px; position: relative; z-index: 2; display: flex; flex-direction: column; flex: 1; }
+    .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+    .project-cat { font-family: var(--f-mono); font-size: 11px; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em; }
+    .project-result { font-family: var(--f-mono); font-size: 11px; color: var(--emerald); background: rgba(16,185,129,0.12); padding: 3px 10px; border-radius: 100px; }
+    .project-body h3 { font-family: var(--f-disp); font-size: 23px; margin-bottom: 10px; }
+    .project-body p { color: var(--text-secondary); font-size: 14.5px; margin-bottom: 20px; flex: 1; }
+    .project-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 13px; font-weight: 600; }
+    .arrow-circle { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-strong); display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    .project-card:hover .arrow-circle { background: #fff; color: #050507; transform: rotate(45deg); }
+
+    /* Bento & Tech Grid */
+    .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+    .bento-card { padding: 32px; display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; }
+    .col-7 { grid-column: span 7; } .col-5 { grid-column: span 5; }
+    .bento-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+    .bento-card h3 { font-family: var(--f-disp); font-size: 23px; margin-bottom: 10px; }
+    .bento-card p { color: var(--text-secondary); font-size: 15px; margin-bottom: 18px; }
+    .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .feature-tag { font-family: var(--f-mono); font-size: 11px; color: #d1d5db; background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); padding: 5px 12px; border-radius: 6px; }
+
+    .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .tech-item { padding: 28px; }
+    .tech-num { font-family: var(--f-mono); font-size: 12px; color: var(--cyan); margin-bottom: 14px; display: block; }
+    .tech-item h4 { font-family: var(--f-disp); font-size: 19px; margin-bottom: 10px; }
+    .tech-item p { font-size: 14px; color: var(--text-secondary); }
+
+    /* Contact Box */
+    .contact-box { background: rgba(14,16,22,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-strong); border-radius: 28px; padding: 50px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; position: relative; overflow: hidden; }
+    .contact-info h2 { font-family: var(--f-disp); font-size: clamp(30px, 4vw, 44px); line-height: 1.1; margin: 14px 0 16px; }
+    .contact-info p { color: var(--text-secondary); margin-bottom: 26px; }
+    .direct-channels { display: flex; flex-direction: column; gap: 14px; }
+    .channel-row { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: 14px; color: #fff; text-decoration: none; word-break: break-word; }
+    .channel-row small { display: block; font-family: var(--f-mono); font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+
+    .estimator-form { display: flex; flex-direction: column; gap: 18px; position: relative; z-index: 2; }
+    .form-label { display: block; font-family: var(--f-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); margin-bottom: 10px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .select-chip { padding: 9px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all 0.2s; user-select: none; }
+    .select-chip.selected { background: #fff; color: #050507; border-color: #fff; font-weight: 600; }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .dark-input { width: 100%; background: rgba(5,6,9,0.68); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px 16px; color: #fff; font-family: var(--f-sans); font-size: 14px; outline: none; }
+    .dark-input:focus { border-color: var(--cyan); }
+    .form-feedback { display: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.35); border-radius: 14px; padding: 16px; font-size: 13.5px; color: #d1fae5; flex-direction: column; gap: 10px; }
+    .form-feedback.show { display: flex; }
+
+    footer { border-top: 1px solid var(--border-subtle); background: rgba(5,5,7,0.82); backdrop-filter: blur(12px); padding: 60px 0 36px; text-align: center; }
+    .footer-watermark { font-family: var(--f-disp); font-size: clamp(68px, 16vw, 180px); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.01) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; user-select: none; margin-bottom: 24px; cursor: pointer; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; color: var(--text-muted); font-size: 12px; font-family: var(--f-mono); }
+
+    /* Modals */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal-card { background: #101218; border: 1px solid var(--border-strong); border-radius: 24px; max-width: 680px; width: 100%; padding: 34px; position: relative; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; }
+    @keyframes modalIn { from{opacity:0;transform:scale(0.94);} to{opacity:1;transform:scale(1);} }
+    .modal-close { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: #fff; cursor: pointer; font-size: 18px; }
+    .modal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+    .modal-stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); padding: 14px; border-radius: 12px; }
+    .modal-stat-box strong { display: block; font-family: var(--f-disp); font-size: 22px; color: var(--cyan); }
+    .modal-stat-box span { font-size: 12px; color: var(--text-secondary); }
+
+    /* Open-Air Cafe Demo */
+    .cafe-demo-overlay { position: fixed; inset: 0; z-index: 300; background: #0d0b09; display: none; overflow-y: auto; -webkit-overflow-scrolling: touch; color: #f8f3eb; }
+    .cafe-demo-overlay.active { display: block; }
+    .cafe-door-screen { position: fixed; inset: 0; z-index: 350; display: flex; align-items: center; justify-content: center; perspective: 1600px; background: #090807; transition: opacity 0.7s ease 0.55s, visibility 0.7s ease 0.55s; }
+    .cafe-door-screen.entered { opacity: 0; visibility: hidden; pointer-events: none; }
+    .door-preview-bg { position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1775360898461-9fc756e73b34?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat; filter: blur(2px) brightness(0.65); transition: transform 1.2s, filter 1.2s; }
+    .cafe-door-screen.opening .door-preview-bg { transform: scale(1.16); filter: blur(0px) brightness(0.95); }
+    .doors-container { position: relative; width: 100%; height: 100%; display: flex; transform-style: preserve-3d; }
+    .cafe-door { width: 50%; height: 100%; position: relative; background: linear-gradient(160deg, rgba(22,18,14,0.92), rgba(12,10,8,0.96)); border: 3px solid #3f3122; transition: transform 1.15s cubic-bezier(0.22,1,0.36,1); display: flex; align-items: center; cursor: pointer; }
+    .cafe-door::before { content: ""; position: absolute; inset: 28px; border: 1px solid rgba(245,158,11,0.28); pointer-events: none; }
+    .door-left { transform-origin: left center; justify-content: flex-end; padding-right: 24px; border-right: 1px solid rgba(245,158,11,0.4); }
+    .door-right { transform-origin: right center; justify-content: flex-start; padding-left: 24px; border-left: 1px solid rgba(245,158,11,0.4); }
+    .door-handle { width: 10px; height: 90px; border-radius: 10px; background: linear-gradient(180deg, #fde68a, #b45309); box-shadow: 0 0 20px rgba(245,158,11,0.35); }
+    .cafe-door-screen.opening .door-left { transform: rotateY(-108deg); }
+    .cafe-door-screen.opening .door-right { transform: rotateY(108deg); }
+    .door-center-plaque { position: absolute; z-index: 10; text-align: center; background: rgba(14,11,9,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(245,158,11,0.4); padding: 38px 36px; border-radius: 24px; max-width: 450px; width: calc(100% - 36px); box-shadow: 0 30px 90px rgba(0,0,0,0.85); transition: opacity 0.4s, transform 0.4s; }
+    .cafe-door-screen.opening .door-center-plaque { opacity: 0; transform: scale(0.9); pointer-events: none; }
+    .door-center-plaque h2 { font-family: var(--f-serif); font-size: clamp(30px, 5vw, 42px); color: #fef3c7; line-height: 1.05; margin: 12px 0; }
+    .door-center-plaque p { color: #d6cfc4; font-size: 14.5px; margin-bottom: 22px; }
+
+    .cafe-top-bar { position: sticky; top: 0; z-index: 320; background: rgba(13,11,9,0.84); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(245,158,11,0.2); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .cafe-brand { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .cafe-brand-name { font-family: var(--f-serif); font-size: 24px; font-weight: 700; color: #fef3c7; }
+    .cafe-live-badge { font-family: var(--f-mono); font-size: 10.5px; padding: 4px 10px; border-radius: 100px; background: rgba(16,185,129,0.14); border: 1px solid rgba(16,185,129,0.35); color: #a7f3d0; }
+    .cafe-top-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .cafe-sm-btn { padding: 8px 16px; font-size: 12.5px; }
+
+    .cafe-hero { position: relative; min-height: 82vh; display: flex; align-items: flex-end; padding: 80px 0 54px; overflow: hidden; background: #14110e; }
+    .cafe-scene-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.9; animation: kenBurns 22s ease-in-out infinite alternate; transition: opacity 0.5s; }
+    @keyframes kenBurns { 0%{transform:scale(1) translate(0,0);} 100%{transform:scale(1.09) translate(-1.5%,-1%);} }
+    .cafe-hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,11,9,0.45) 0%, rgba(13,11,9,0.15) 40%, rgba(13,11,9,0.96) 100%); pointer-events: none; }
+    .breeze-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
+    .swaying-branch-left { position: absolute; top: -20px; left: -25px; width: 220px; opacity: 0.55; transform-origin: top left; animation: swayBreeze 5.5s ease-in-out infinite; }
+    .swaying-branch-right { position: absolute; top: -15px; right: -25px; width: 200px; opacity: 0.48; transform-origin: top right; animation: swayBreezeRev 6.4s ease-in-out infinite; }
+    @keyframes swayBreeze { 0%,100%{transform:rotate(0deg);} 50%{transform:rotate(5.5deg);} }
+    @keyframes swayBreezeRev { 0%,100%{transform:rotate(0deg) scaleX(-1);} 50%{transform:rotate(-5deg) scaleX(-1);} }
+    .string-lights { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 0 20px; }
+    .bulb { width: 10px; height: 14px; border-radius: 50% 50% 45% 45%; background: #fde68a; box-shadow: 0 0 18px 4px rgba(245,158,11,0.65); margin-top: 8px; transform-origin: top center; animation: swingBulb 3.5s ease-in-out infinite; }
+    .bulb:nth-child(even) { animation-delay: -1.4s; margin-top: 16px; }
+    @keyframes swingBulb { 0%,100%{transform:rotate(-4deg);} 50%{transform:rotate(4deg);} }
+    .breeze-particle { position: absolute; width: 8px; height: 5px; border-radius: 80% 10%; background: rgba(253,230,138,0.55); box-shadow: 0 0 8px rgba(245,158,11,0.4); animation: driftWind 9s linear infinite; }
+    @keyframes driftWind { 0%{transform:translate(-10vw,15vh) rotate(0deg);opacity:0;} 15%{opacity:0.85;} 85%{opacity:0.7;} 100%{transform:translate(110vw,-10vh) rotate(260deg);opacity:0;} }
+
+    .cafe-hero-content { position: relative; z-index: 4; width: 100%; }
+    .cafe-breeze-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 15px; border-radius: 100px; background: rgba(13,11,9,0.72); border: 1px solid rgba(245,158,11,0.4); font-family: var(--f-mono); font-size: 11.5px; color: #fde68a; margin-bottom: 16px; }
+    .cafe-hero-content h1 { font-family: var(--f-serif); font-size: clamp(38px, 6vw, 66px); line-height: 1.02; color: #fffaf0; margin-bottom: 12px; max-width: 780px; }
+    .cafe-hero-content p { color: #e5ddd0; font-size: 17px; max-width: 600px; margin-bottom: 26px; }
+    .scene-switcher { display: flex; flex-wrap: wrap; gap: 10px; background: rgba(13,11,9,0.78); backdrop-filter: blur(14px); border: 1px solid rgba(245,158,11,0.28); padding: 10px; border-radius: 18px; max-width: 920px; }
+    .scene-tab { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: #e5ddd0; padding: 10px 16px; border-radius: 12px; font-size: 13px; cursor: pointer; transition: all 0.25s; }
+    .scene-tab.active { background: #f59e0b; color: #090807; border-color: #f59e0b; font-weight: 700; }
+
+    .cafe-section { padding: 70px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .cafe-sec-title { font-family: var(--f-serif); font-size: clamp(30px, 4.5vw, 44px); color: #fef3c7; margin-bottom: 10px; }
+    .cafe-vibe-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+    .vibe-photo-card { border-radius: 18px; overflow: hidden; background: #171411; border: 1px solid rgba(245,158,11,0.18); }
+    .vibe-photo-card img { width: 100%; height: 225px; object-fit: cover; display: block; }
+    .vibe-photo-info { padding: 18px; }
+    .vibe-photo-info h4 { font-family: var(--f-serif); font-size: 22px; color: #fef3c7; margin-bottom: 4px; }
+    .vibe-photo-info p { font-size: 13.5px; color: #b9b0a3; }
+
+    .cafe-menu-layout { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 36px; align-items: center; margin-top: 28px; }
+    .coffee-steam-frame { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(245,158,11,0.25); }
+    .coffee-steam-frame img { width: 100%; height: 380px; object-fit: cover; display: block; }
+    .steam-wisp { position: absolute; bottom: 48%; width: 14px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.34); filter: blur(8px); animation: steamRise 3.8s ease-in-out infinite; }
+    @keyframes steamRise { 0%{transform:translateY(0) scaleX(1);opacity:0;} 40%{opacity:0.55;} 100%{transform:translateY(-90px) scaleX(1.8);opacity:0;} }
+    .menu-items-list { display: flex; flex-direction: column; gap: 14px; }
+    .menu-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(245,158,11,0.14); border-radius: 14px; gap: 12px; }
+    .menu-row h4 { font-size: 16px; color: #fffaf0; }
+    .menu-row p { font-size: 13px; color: #a89f91; }
+    .menu-price { font-family: var(--f-mono); font-size: 15px; font-weight: 600; color: #fbbf24; white-space: nowrap; }
+
+    .cafe-reserve-box { background: linear-gradient(145deg, #1b1612, #100d0b); border: 1px solid rgba(245,158,11,0.28); border-radius: 24px; padding: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+    .cafe-reserve-success { display: none; margin-top: 10px; padding: 14px; border-radius: 12px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: #a7f3d0; font-size: 14px; }
+    .cafe-reserve-success.show { display: block; }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: all 0.7s cubic-bezier(0.2,0.8,0.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 960px) {
+      .hero-grid, .contact-box, .cafe-menu-layout, .cafe-reserve-box { grid-template-columns: 1fr; }
+      .portfolio-grid, .cafe-vibe-grid { grid-template-columns: 1fr; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr); }
+      .col-7, .col-5 { grid-column: span 12; }
+      .contact-box { padding: 32px 22px; }
+    }
+    @media (max-width: 720px) {
+      .nav-links, .nav-cta { display: none; }
+      .mobile-toggle, .mobile-sticky-bar { display: flex; }
+      footer { padding-bottom: 96px; }
+      .tech-grid, .input-row, .modal-stats { grid-template-columns: 1fr; }
+      .hero { padding-top: 118px; }
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+      .modal-card { padding: 24px 18px; }
+      .door-center-plaque { padding: 26px 20px; }
+      .cafe-reserve-box { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cinematic 4-Slide Background Wall + Tech Particle Overlay -->
+  <div class="bg-wall" id="bgWall">
+    <div class="bg-slide active" style="background-image:url('https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1700163458324-033a60254207?auto=format&fit=crop&w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1775360898461-9fc756e73b34?auto=format&fit=crop&w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1782834294716-8e28c18bdba6?auto=format&fit=crop&w=1600&q=80')"></div>
+  </div>
+  <div class="bg-wall-scrim"></div>
+  <div class="tech-grid-overlay"></div>
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Navbar -->
+  <div class="navbar-wrap">
+    <nav class="navbar">
+      <a href="#" class="brand">
+        <span class="brand-logo">SV.</span>
+        <span class="status-pill"><span class="pulse-dot"></span>Available</span>
+      </a>
+      <div class="nav-links">
+        <a href="#work">Selected Work</a>
+        <a href="#industries">Industries</a>
+        <a href="#edge">The SV Standard</a>
+        <a href="#estimate">Start Project</a>
+      </div>
+      <a href="#estimate" class="btn btn-primary nav-cta">Book Website →</a>
+      <button class="mobile-toggle" id="menuBtn" aria-label="Open Menu">☰</button>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu & Sticky Bar -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#work" class="m-link">Selected Work</a>
+    <a href="#industries" class="m-link">Industries</a>
+    <a href="#edge" class="m-link">The SV Standard</a>
+    <a href="#estimate" class="m-link">Start Project</a>
+    <button class="btn btn-ghost" id="closeMenuBtn">Close ✕</button>
+  </div>
+  <div class="mobile-sticky-bar">
+    <span>SV STUDIO // OPEN FOR PROJECTS</span>
+    <a href="#estimate" class="btn btn-primary">Book Now →</a>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-badge"><span>●</span> BESPOKE WEB EXPERIENCES FOR HIGH-TICKET BRANDS</div>
+          <h1>Websites Crafted <br /><span class="muted">To Make Clients</span> <br /><span class="highlight">Choose You First.</span></h1>
+          <p class="hero-desc">
+            SV designs ultra-fast, luxury digital experiences that turn casual visitors into bookings and loyal buyers for
+            <strong>Real Estate Developers, Hotels & Resorts, Cafés, and Flagship Showrooms.</strong>
+          </p>
+          <div class="hero-actions">
+            <a href="#work" class="btn btn-primary">Explore Selected Work ↓</a>
+            <button type="button" class="btn btn-amber" id="heroCafeDemoBtn">Enter Live Café Demo 🚪</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item"><h3>99/100</h3><p>Performance Score</p></div>
+            <div class="stat-item"><h3>3.4x</h3><p>Avg. Lead Growth</p></div>
+            <div class="stat-item"><h3>0.5s</h3><p>Instant Load Speed</p></div>
+          </div>
+
+          <div class="wall-controller">
+            <span class="wall-label" id="wallSlideLabel">WALL // 01 LUXURY REAL ESTATE</span>
+            <div class="wall-dots" id="wallDots">
+              <button type="button" class="wall-dot active" data-slide="0" aria-label="Slide 1"></button>
+              <button type="button" class="wall-dot" data-slide="1" aria-label="Slide 2"></button>
+              <button type="button" class="wall-dot" data-slide="2" aria-label="Slide 3"></button>
+              <button type="button" class="wall-dot" data-slide="3" aria-label="Slide 4"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-showcase">
+          <div class="showcase-topbar">
+            <div class="window-dots"><span></span><span></span><span></span></div>
+            <div class="url-bar">sv-studio.design // live-impact</div>
+          </div>
+          <div class="live-cards-stack">
+            <div class="mini-metric-card">
+              <div class="mini-left"><div class="mini-icon">🏢</div><div><h4>Real Estate Portals</h4><span>3D Walkthroughs + Site Visits</span></div></div>
+              <div class="mini-badge">+240% Leads</div>
+            </div>
+            <div class="mini-metric-card">
+              <div class="mini-left"><div class="mini-icon">🏨</div><div><h4>Luxury Hotels & Resorts</h4><span>0% Commission Direct Booking</span></div></div>
+              <div class="mini-badge">+3.1x Bookings</div>
+            </div>
+            <div class="mini-metric-card">
+              <div class="mini-left"><div class="mini-icon">☕</div><div><h4>Open-Air Cafés & Dining</h4><span>3D Entrance + Table Reserve</span></div></div>
+              <div class="mini-badge">+180% Footfall</div>
+            </div>
+            <div class="mini-metric-card">
+              <div class="mini-left"><div class="mini-icon">🛍️</div><div><h4>Flagship Retail Showrooms</h4><span>Digital Catalog + VIP Concierge</span></div></div>
+              <div class="mini-badge">High-Trust UI</div>
+            </div>
+          </div>
+          <div class="code-snippet-box">
+            <div><span class="code-key">const</span> <span class="code-val">svStudio</span> = {</div>
+            <div>&nbsp;&nbsp;aesthetic: <span class="code-key">"Obsidian & Platinum Luxury"</span>,</div>
+            <div>&nbsp;&nbsp;experience: <span class="code-key">"Interactive & Conversion-First"</span>,</div>
+            <div>&nbsp;&nbsp;contact: <span class="code-key">"neon.ssv01@gmail.com"</span></div>
+            <div>};</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">REAL ESTATE PLATFORMS</div>
+      <div class="marquee-item">LUXURY HOTELS & RESORTS</div>
+      <div class="marquee-item">OPEN-AIR CAFÉS & LOUNGES</div>
+      <div class="marquee-item">FLAGSHIP RETAIL SHOWROOMS</div>
+      <div class="marquee-item">CONVERSION-FIRST DESIGN</div>
+      <div class="marquee-item">REAL ESTATE PLATFORMS</div>
+      <div class="marquee-item">LUXURY HOTELS & RESORTS</div>
+      <div class="marquee-item">OPEN-AIR CAFÉS & LOUNGES</div>
+      <div class="marquee-item">FLAGSHIP RETAIL SHOWROOMS</div>
+      <div class="marquee-item">CONVERSION-FIRST DESIGN</div>
+    </div>
+  </div>
+
+  <!-- Portfolio -->
+  <section id="work">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="mono-tag">// 01. SELECTED WORK</span>
+        <h2 class="section-title">Work That Closes Deals.</h2>
+        <p class="section-sub">Tailored design psychology for high-value industries. Inspect any case study—or step directly inside our live animated Café experience.</p>
+      </div>
+
+      <div class="filter-bar reveal">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="realestate">Real Estate</button>
+        <button class="filter-btn" data-filter="hospitality">Hotels & Resorts</button>
+        <button class="filter-btn" data-filter="cafe">Cafés & Dining</button>
+        <button class="filter-btn" data-filter="retail">Big Retail Shops</button>
+      </div>
+
+      <div class="portfolio-grid">
+        <article class="spotlight-card project-card reveal" data-category="realestate" data-id="aura">
+          <div class="project-preview"><div class="mock-browser"><div class="mock-header"><span>AURA_ESTATES.IN</span><span>● LIVE 4K</span></div><div class="mock-hero-box theme-realestate"><div class="mock-pills"><span class="mock-pill gold">LUXURY VILLAS</span><span class="mock-pill">EMI CALCULATOR</span></div><div class="mock-title">Skyline Penthouse & Luxury Residences</div><div class="mock-pills"><span class="mock-pill">360° Virtual Tour</span><span class="mock-pill gold">Book Site Visit →</span></div></div></div></div>
+          <div class="project-body"><div class="project-meta"><span class="project-cat">Real Estate Developer</span><span class="project-result">3.8x Site Visits</span></div><h3>Aura Skyline Estates</h3><p>High-ticket property showcase featuring interactive floor plans, dynamic pricing filters, and effortless site-visit scheduling.</p><div class="project-footer"><span>Inspect Case Study</span><div class="arrow-circle">↗</div></div></div>
+        </article>
+
+        <article class="spotlight-card project-card reveal" data-category="hospitality" data-id="verve">
+          <div class="project-preview"><div class="mock-browser"><div class="mock-header"><span>ELYSIAN_RESORT.COM</span><span>● DIRECT BOOKING</span></div><div class="mock-hero-box theme-hotel"><div class="mock-pills"><span class="mock-pill cyan">5-STAR RETREAT</span><span class="mock-pill">0% OTA FEES</span></div><div class="mock-title">Private Pool Suites & Mountain Sanctuary</div><div class="mock-pills"><span class="mock-pill cyan">Check Availability →</span><span class="mock-pill">Drone Reel</span></div></div></div></div>
+          <div class="project-body"><div class="project-meta"><span class="project-cat">Hotels & Resorts</span><span class="project-result">₹18L+ Direct Bookings</span></div><h3>The Elysian Cliff Resort</h3><p>Immersive resort web experience built to eliminate 20% OTA commissions with instant suite reservations and curated itineraries.</p><div class="project-footer"><span>Inspect Case Study</span><div class="arrow-circle">↗</div></div></div>
+        </article>
+
+        <article class="spotlight-card project-card reveal" data-category="cafe" data-live-cafe="true" style="border-color:rgba(245,158,11,0.42);">
+          <div class="project-preview"><div class="mock-browser"><div class="mock-header"><span>VERDANT_BREEZE.CAFE</span><span style="color:#fbbf24;">● LIVE INTERACTIVE TOUR</span></div><div class="mock-hero-box theme-cafe"><div class="mock-pills"><span class="mock-pill gold">🚪 3D ENTRANCE DOORS</span><span class="mock-pill">OPEN-AIR BREEZE</span></div><div class="mock-title">Verdant Breeze Open-Air Café & Roastery</div><div class="mock-pills"><span class="mock-pill gold">Click To Step Inside →</span><span class="mock-pill">Courtyard + Interior</span></div></div></div></div>
+          <div class="project-body"><div class="project-meta"><span class="project-cat" style="color:#fbbf24;">Featured Live Café Website</span><span class="project-result">+210% Table Bookings</span></div><h3>Verdant Breeze Open-Air Café</h3><p>Full interactive café experience featuring animated 3D entrance doors, breezy open courtyard visuals, cozy indoor lounges, and live table booking.</p><div class="project-footer" style="color:#fbbf24;"><span>Open Doors & Launch Live Café Site</span><div class="arrow-circle" style="border-color:rgba(245,158,11,0.5);">🚪</div></div></div>
+        </article>
+
+        <article class="spotlight-card project-card reveal" data-category="retail" data-id="kronos">
+          <div class="project-preview"><div class="mock-browser"><div class="mock-header"><span>KRONOS_FLAGSHIP.IN</span><span>● SHOWROOM + STORE</span></div><div class="mock-hero-box theme-retail"><div class="mock-pills"><span class="mock-pill cyan">FLAGSHIP SHOWROOM</span><span class="mock-pill">VIP APPOINTMENT</span></div><div class="mock-title">Kronos Luxury Living & Furniture Studio</div><div class="mock-pills"><span class="mock-pill cyan">Explore Catalog →</span><span class="mock-pill">Store Locator</span></div></div></div></div>
+          <div class="project-body"><div class="project-meta"><span class="project-cat">Flagship Retail Showroom</span><span class="project-result">4.2x Showroom Visits</span></div><h3>Kronos Flagship Studio</h3><p>Ultra-sleek digital catalog for a multi-floor showroom featuring high-res lookbooks, VIP appointment booking, and direct concierge.</p><div class="project-footer"><span>Inspect Case Study</span><div class="arrow-circle">↗</div></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bento Grid -->
+  <section id="industries">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="mono-tag">// 02. INDUSTRY SPECIALIZATION</span>
+        <h2 class="section-title">Built For High-Value Brands.</h2>
+        <p class="section-sub">Zero generic templates. Every platform is custom-crafted with features designed to multiply bookings, inquiries, and showroom visits.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="spotlight-card bento-card col-7 reveal">
+          <div><div class="bento-icon">🏢</div><h3>Real Estate & Property Developers</h3><p>Buyers evaluate your brand authority long before stepping onto a property. We showcase developments with cinematic clarity, interactive floor plans, and seamless lead capture.</p></div>
+          <div class="feature-tags"><span class="feature-tag">Interactive Floor Plans</span><span class="feature-tag">EMI Calculator</span><span class="feature-tag">Site-Visit Lead Funnel</span><span class="feature-tag">Brochure Gate</span></div>
+        </div>
+        <div class="spotlight-card bento-card col-5 reveal">
+          <div><div class="bento-icon">🏨</div><h3>Hotels, Villas & Resorts</h3><p>Stop losing 20% margins to third-party aggregators. Convert travelers directly through immersive resort storytelling and zero-commission suite reservations.</p></div>
+          <div class="feature-tags"><span class="feature-tag">Direct Room Booking</span><span class="feature-tag">Gallery & Drone View</span><span class="feature-tag">Event Inquiry Funnel</span></div>
+        </div>
+        <div class="spotlight-card bento-card col-5 reveal">
+          <div><div class="bento-icon">☕</div><h3>Cafés, Lounges & Fine Dining</h3><p>Bring your café’s open-air ambiance online. Interactive entrance tours, visual digital menus, and instant table reservations that keep weekends full.</p></div>
+          <div class="feature-tags"><span class="feature-tag">Interactive Space Tour</span><span class="feature-tag">Digital Visual Menu</span><span class="feature-tag">Table Reservation</span></div>
+        </div>
+        <div class="spotlight-card bento-card col-7 reveal">
+          <div><div class="bento-icon">🏬</div><h3>Flagship Retail Shops & Showrooms</h3><p>Whether it is fine jewellery, luxury furniture, electronics, or designer apparel—transform your physical showroom into an unforgettable 24/7 digital flagship store.</p></div>
+          <div class="feature-tags"><span class="feature-tag">High-Speed Catalog</span><span class="feature-tag">VIP Appointment System</span><span class="feature-tag">Bulk Order Forms</span><span class="feature-tag">Local SEO</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SV Standard -->
+  <section id="edge">
+    <div class="container">
+      <div class="section-header reveal"><span class="mono-tag">// 03. THE SV STANDARD</span><h2 class="section-title">Why Brands Choose SV Over Standard Templates.</h2></div>
+      <div class="tech-grid">
+        <div class="spotlight-card tech-item reveal"><span class="tech-num">01 // SPEED</span><h4>Sub-Second Performance</h4><p>53% of visitors leave slow sites. Our lean, modern codebase opens effortlessly in half a second.</p></div>
+        <div class="spotlight-card tech-item reveal"><span class="tech-num">02 // STRATEGY</span><h4>Built To Convert</h4><p>Every layout, contrast, and call-to-action guides visitors smoothly toward inquiries and bookings.</p></div>
+        <div class="spotlight-card tech-item reveal"><span class="tech-num">03 // MOBILE FIRST</span><h4>Flawless On Every Screen</h4><p>Designed for effortless thumb navigation—delivering a fluid, app-like experience on iPhone and Android.</p></div>
+        <div class="spotlight-card tech-item reveal"><span class="tech-num">04 // LAUNCH</span><h4>Rapid 7–14 Day Delivery</h4><p>From creative direction and copywriting to performance tuning and live launch—handled end-to-end.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Estimator -->
+  <section id="estimate">
+    <div class="container">
+      <div class="contact-box reveal">
+        <div class="contact-info">
+          <span class="mono-tag">// 04. START YOUR PROJECT</span>
+          <h2>Ready To Elevate Your Brand?</h2>
+          <p>Select your industry and desired capabilities below—generate a tailored project brief and send it directly to SV Studio in one click.</p>
+          <div class="direct-channels">
+            <a href="mailto:neon.ssv01@gmail.com" class="channel-row"><span>✉️</span><div><small>Official Studio Email</small><strong>neon.ssv01@gmail.com</strong></div></a>
+            <div class="channel-row"><span>⚡</span><div><small>Priority Response</small><strong>Replies within 2 Hours • India & Global</strong></div></div>
+          </div>
+        </div>
+        <form class="estimator-form" id="briefForm">
+          <div>
+            <label class="form-label">1. Select Your Industry</label>
+            <div class="chip-group" id="industryChips">
+              <span class="select-chip selected" data-val="Real Estate">🏢 Real Estate</span>
+              <span class="select-chip" data-val="Hotel / Resort">🏨 Hotel / Resort</span>
+              <span class="select-chip" data-val="Cafe / Restaurant">☕ Café / Restaurant</span>
+              <span class="select-chip" data-val="Big Retail Shop">🛍️ Big Retail Shop</span>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">2. Capabilities You Need</label>
+            <div class="chip-group" id="featureChips">
+              <span class="select-chip selected" data-val="Bespoke Design">Bespoke Design</span>
+              <span class="select-chip" data-val="Lead Funnel">Lead Funnel</span>
+              <span class="select-chip" data-val="Online Booking">Online Booking</span>
+              <span class="select-chip" data-val="SEO Setup">SEO Setup</span>
+              <span class="select-chip" data-val="Admin Panel">Admin Panel</span>
+            </div>
+          </div>
+          <div class="input-row">
+            <input type="text" id="clientName" class="dark-input" placeholder="Your Name" required />
+            <input type="text" id="bizName" class="dark-input" placeholder="Business / Brand Name" required />
+          </div>
+          <input type="text" id="clientContact" class="dark-input" placeholder="Your Phone / WhatsApp or Email" required />
+          <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;">Send Project Brief to SV Studio →</button>
+          <div class="form-feedback" id="formFeedback">
+            <div>✅ <strong>Project Brief Ready!</strong> If your email app didn’t open automatically, copy your brief below and send it to <strong>neon.ssv01@gmail.com</strong>:</div>
+            <button type="button" id="copyBriefBtn" class="btn btn-ghost" style="padding:10px 18px;font-size:13px;">📋 Copy Brief Text</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-watermark" id="secretBrandTrigger" title="SV Studio">SV STUDIO</div>
+      <div class="footer-bottom">
+        <span>© 2026 SV DIGITAL STUDIO • NEON.SSV01@GMAIL.COM</span>
+        <span>CRAFTED FOR HIGH-GROWTH BRANDS</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Case Study Modal -->
+  <div class="modal-overlay" id="caseModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">✕</button>
+      <span class="mono-tag" id="mCategory" style="color:var(--cyan);">CATEGORY</span>
+      <h2 id="mTitle" style="font-family:var(--f-disp);font-size:30px;margin:10px 0;">Project Title</h2>
+      <p id="mDesc" style="color:var(--text-secondary);font-size:15px;"></p>
+      <div class="modal-stats" id="mStats"></div>
+      <div style="margin-bottom:24px;"><h4 style="font-family:var(--f-mono);font-size:12px;color:#fff;margin-bottom:10px;">SIGNATURE DELIVERABLES:</h4><ul id="mFeatures" style="padding-left:18px;color:var(--text-secondary);font-size:14px;line-height:1.9;"></ul></div>
+      <a href="#estimate" id="modalCta" class="btn btn-primary" style="width:100%;">Want Similar Results? Book Now →</a>
+    </div>
+  </div>
+
+  <!-- Secret SV Brand Logo Downloader Modal -->
+  <div class="modal-overlay" id="brandKitModal">
+    <div class="modal-card" style="text-align:center;">
+      <button class="modal-close" id="brandKitClose">✕</button>
+      <span class="mono-tag" style="color:var(--cyan);">SV SECRET BRAND KIT</span>
+      <h2 style="font-family:var(--f-disp);font-size:26px;margin:10px 0;">Download Your SV. Black Logos</h2>
+      <p style="color:var(--text-secondary);font-size:14px;margin-bottom:18px;">Use these custom Black & Metallic Silver/Cyan logos for your WhatsApp DP, Instagram, or custom link preview.</p>
+      <canvas id="bannerCanvas" width="1200" height="630" style="width:100%;border-radius:12px;border:1px solid var(--border-strong);margin-bottom:12px;"></canvas>
+      <canvas id="dpCanvas" width="512" height="512" style="width:120px;height:120px;border-radius:16px;border:1px solid var(--border-strong);margin-bottom:16px;"></canvas>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <button type="button" class="btn btn-primary" id="dlBannerBtn" style="padding:11px 20px;font-size:13px;">⬇ Download Banner (JPG)</button>
+        <button type="button" class="btn btn-ghost" id="dlDpBtn" style="padding:11px 20px;font-size:13px;">⬇ Download DP Logo (PNG)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Open-Air Cafe Demo Overlay -->
+  <div class="cafe-demo-overlay" id="cafeDemoOverlay">
+    <div class="cafe-door-screen" id="cafeDoorScreen">
+      <div class="door-preview-bg"></div>
+      <div class="doors-container" id="doorsClickArea">
+        <div class="cafe-door door-left"><div class="door-handle"></div></div>
+        <div class="cafe-door door-right"><div class="door-handle"></div></div>
+      </div>
+      <div class="door-center-plaque">
+        <span class="mono-tag" style="color:#fbbf24;">SV LIVE CLIENT EXPERIENCE</span>
+        <h2>Verdant Breeze Café & Roastery</h2>
+        <p>Step through our entrance doors into a sunlit open-air courtyard, gentle garden breeze, fresh roasted coffee, and warm conversations.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button type="button" class="btn btn-amber" id="openDoorsBtn" style="width:100%;">Open Doors & Step Inside →</button>
+          <button type="button" class="btn btn-ghost" id="exitFromDoorBtn" style="width:100%;padding:11px;">← Back to SV Portfolio</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cafe-top-bar">
+      <div class="cafe-brand"><span class="cafe-brand-name">Verdant Breeze</span><span class="cafe-live-badge">🍃 Open Courtyard • 22°C Gentle Breeze</span></div>
+      <div class="cafe-top-actions">
+        <button type="button" class="btn btn-ghost cafe-sm-btn" id="replayDoorsBtn">🚪 Replay Entrance</button>
+        <a href="#cafeReserve" class="btn btn-amber cafe-sm-btn">Reserve Table</a>
+        <button type="button" class="btn btn-primary cafe-sm-btn" id="closeCafeDemo">← Back to SV Studio</button>
+      </div>
+    </div>
+
+    <div class="cafe-hero">
+      <img id="cafeSceneImg" class="cafe-scene-img" src="https://images.unsplash.com/photo-1775360898461-9fc756e73b34?auto=format&fit=crop&w=1400&q=80" alt="Open-air courtyard café with guests enjoying coffee and conversation" />
+      <div class="cafe-hero-scrim"></div>
+      <div class="breeze-layer">
+        <svg class="swaying-branch-left" viewBox="0 0 200 200" fill="none"><path d="M0 0 C50 40,110 80,155 150" stroke="#15261a" stroke-width="5" stroke-linecap="round"/><ellipse cx="60" cy="45" rx="28" ry="12" transform="rotate(-25 60 45)" fill="#1e3a24"/><ellipse cx="95" cy="72" rx="30" ry="13" transform="rotate(20 95 72)" fill="#24472c"/><ellipse cx="120" cy="108" rx="26" ry="11" transform="rotate(-30 120 108)" fill="#1a3420"/><ellipse cx="145" cy="135" rx="22" ry="10" transform="rotate(15 145 135)" fill="#295232"/></svg>
+        <svg class="swaying-branch-right" viewBox="0 0 200 200" fill="none"><path d="M0 0 C50 40,110 80,155 150" stroke="#15261a" stroke-width="5" stroke-linecap="round"/><ellipse cx="60" cy="45" rx="28" ry="12" transform="rotate(-25 60 45)" fill="#1e3a24"/><ellipse cx="95" cy="72" rx="30" ry="13" transform="rotate(20 95 72)" fill="#24472c"/><ellipse cx="120" cy="108" rx="26" ry="11" transform="rotate(-30 120 108)" fill="#1a3420"/></svg>
+        <div class="string-lights"><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div></div>
+        <div class="breeze-particle" style="top:22%;animation-delay:0s;animation-duration:8.5s;"></div>
+        <div class="breeze-particle" style="top:48%;animation-delay:-2.5s;animation-duration:10s;"></div>
+        <div class="breeze-particle" style="top:66%;animation-delay:-5s;animation-duration:7.8s;"></div>
+        <div class="breeze-particle" style="top:34%;animation-delay:-6.5s;animation-duration:11s;"></div>
+      </div>
+
+      <div class="container cafe-hero-content">
+        <div class="cafe-breeze-pill"><span>✨</span> <span id="cafeSceneTag">OPEN COURTYARD • FRESH BREEZE & CONVERSATIONS</span></div>
+        <h1 id="cafeSceneTitle">Slow Mornings Under An Open Sky.</h1>
+        <p id="cafeSceneDesc">Warm sunlight, gentle breeze rustling through terrace greenery, and unhurried conversations over freshly brewed artisan espresso.</p>
+        <div class="scene-switcher">
+          <button type="button" class="scene-tab active" data-scene="courtyard">☀️ Open Courtyard (Guests & Coffee)</button>
+          <button type="button" class="scene-tab" data-scene="garden">🌿 Shaded Garden Patio</button>
+          <button type="button" class="scene-tab" data-scene="interior">🛋️ Cozy Indoor Lounge</button>
+          <button type="button" class="scene-tab" data-scene="twilight">✨ Evening String-Light Terrace</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cafe-section">
+      <div class="container">
+        <span class="mono-tag" style="color:#fbbf24;">// STEP INSIDE THE ATMOSPHERE</span>
+        <h2 class="cafe-sec-title">Every Corner Crafted For Unhurried Moments.</h2>
+        <p style="color:#b9b0a3;max-width:640px;">From breezy open-air terrace tables to warm indoor lounges lit by pendant globes—choose the space that matches your mood.</p>
+        <div class="cafe-vibe-grid">
+          <div class="vibe-photo-card"><img src="https://images.unsplash.com/photo-1780851527274-53cf11e56b33?auto=format&fit=crop&w=900&q=80" alt="Friends enjoying coffee outdoors" /><div class="vibe-photo-info"><h4>Breezy Terrace Conversations</h4><p>Open-air seating designed for long catch-ups, fresh afternoon air, and golden-hour lattes.</p></div></div>
+          <div class="vibe-photo-card"><img src="https://images.unsplash.com/photo-1749871615234-98bff62995ba?auto=format&fit=crop&w=900&q=80" alt="Cozy cafe interior with warm lights" /><div class="vibe-photo-info"><h4>Warm Minimalist Interior</h4><p>Handcrafted wooden tables, soft globe lighting, and calm acoustic vibes for focused mornings.</p></div></div>
+          <div class="vibe-photo-card"><img src="https://images.unsplash.com/photo-1767324673007-9f8f57d62f48?auto=format&fit=crop&w=900&q=80" alt="Evening outdoor cafe with plants and lights" /><div class="vibe-photo-info"><h4>Botanical Night Courtyard</h4><p>Warm overhead string lights glowing gently above lush greenery as evening cools down.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cafe-section">
+      <div class="container">
+        <span class="mono-tag" style="color:#fbbf24;">// ROASTERY & KITCHEN</span>
+        <h2 class="cafe-sec-title">Freshly Brewed Pour-Overs & Artisanal Plates.</h2>
+        <div class="cafe-menu-layout">
+          <div class="coffee-steam-frame">
+            <img src="https://images.unsplash.com/photo-1530174883092-c2a7aa3f1cfe?auto=format&fit=crop&w=900&q=80" alt="Fresh espresso and croissant" />
+            <div class="steam-wisp" style="left:42%;animation-delay:0s;"></div>
+            <div class="steam-wisp" style="left:49%;animation-delay:-1.4s;"></div>
+            <div class="steam-wisp" style="left:55%;animation-delay:-2.6s;"></div>
+          </div>
+          <div class="menu-items-list">
+            <div class="menu-row"><div><h4>Madagascar Vanilla Cortado</h4><p>Double ristretto, velvety micro-foam, roasted vanilla bean</p></div><span class="menu-price">₹320</span></div>
+            <div class="menu-row"><div><h4>Courtyard Citrus Cold Brew</h4><p>18-hour slow steeped Arabica with fresh Valencia orange peel</p></div><span class="menu-price">₹340</span></div>
+            <div class="menu-row"><div><h4>Warm Butter Croissant & Espresso</h4><p>Flaky French-butter pastry paired with single-origin espresso</p></div><span class="menu-price">₹410</span></div>
+            <div class="menu-row"><div><h4>Truffle Mushroom Sourdough Tartine</h4><p>Wood-fired toast, herb mascarpone, roasted wild mushrooms</p></div><span class="menu-price">₹540</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cafe-section" id="cafeReserve" style="border-bottom:none;">
+      <div class="container">
+        <div class="cafe-reserve-box">
+          <div><span class="mono-tag" style="color:#fbbf24;">// INSTANT RESERVATION</span><h2 class="cafe-sec-title">Reserve Your Open-Air Table.</h2><p style="color:#b9b0a3;">Pick your favorite corner in the courtyard or inside our cozy lounge. Instant confirmation in seconds.</p></div>
+          <form id="cafeReserveForm" style="display:flex;flex-direction:column;gap:14px;">
+            <select id="cafeSeating" class="dark-input" style="background:#0d0b09;"><option value="Open-Air Courtyard (Breeze & Sky)">☀️ Open-Air Courtyard (Breeze & Sky)</option><option value="Under Garden Tree Canopy">🌿 Under Garden Tree Canopy</option><option value="Cozy Indoor Lounge">🛋️ Cozy Indoor Lounge</option></select>
+            <div class="input-row"><input type="text" id="cafeGuestName" class="dark-input" style="background:#0d0b09;" placeholder="Your Name" required /><select id="cafeGuests" class="dark-input" style="background:#0d0b09;"><option value="2 Guests">2 Guests</option><option value="4 Guests">4 Guests</option><option value="6+ Group Table">6+ Group Table</option></select></div>
+            <button type="submit" class="btn btn-amber" style="width:100%;">Confirm Instant Table →</button>
+            <div class="cafe-reserve-success" id="cafeReserveSuccess"></div>
+          </form>
+        </div>
+        <div style="margin-top:44px;padding:26px;border-radius:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div><span class="mono-tag" style="color:var(--cyan);">CRAFTED BY SV STUDIO</span><h4 style="font-family:var(--f-disp);font-size:20px;margin-top:4px;">Want an interactive experience like this for your Café, Resort, or Real Estate brand?</h4></div>
+          <button type="button" class="btn btn-primary" id="hireFromCafeBtn">Book Your Website →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STUDIO_EMAIL = "neon.ssv01@gmail.com";
+
+    // Cinematic Background Wall Slideshow
+    const bgSlides = document.querySelectorAll('.bg-slide');
+    const wallDots = document.querySelectorAll('.wall-dot');
+    const wallLabel = document.getElementById('wallSlideLabel');
+    const wallNames = [
+      "WALL // 01 LUXURY REAL ESTATE",
+      "WALL // 02 PALM RESORTS & HOTELS",
+      "WALL // 03 OPEN-AIR CAFÉ VIBES",
+      "WALL // 04 FLAGSHIP SHOWROOMS"
+    ];
+    let currentSlide = 0;
+
+    function setBgSlide(idx) {
+      bgSlides.forEach(s => s.classList.remove('active'));
+      wallDots.forEach(d => d.classList.remove('active'));
+      currentSlide = idx % bgSlides.length;
+      bgSlides[currentSlide].classList.add('active');
+      wallDots[currentSlide].classList.add('active');
+      wallLabel.textContent = wallNames[currentSlide];
+    }
+
+    let wallTimer = setInterval(() => setBgSlide(currentSlide + 1), 5500);
+    wallDots.forEach(dot => dot.addEventListener('click', () => {
+      clearInterval(wallTimer);
+      setBgSlide(parseInt(dot.dataset.slide, 10));
+      wallTimer = setInterval(() => setBgSlide(currentSlide + 1), 5500);
+    }));
+
+    // Particle Constellation
+    const pCanvas = document.getElementById('particleCanvas');
+    const pCtx = pCanvas.getContext('2d');
+    let particles = [];
+    function initParticles() {
+      pCanvas.width = window.innerWidth;
+      pCanvas.height = window.innerHeight;
+      const count = window.innerWidth < 768 ? 28 : 52;
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * pCanvas.width,
+        y: Math.random() * pCanvas.height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 1.6 + 0.6
+      }));
+    }
+    function animateParticles() {
+      pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        const a = particles[i];
+        a.x += a.vx; a.y += a.vy;
+        if (a.x < 0 || a.x > pCanvas.width) a.vx *= -1;
+        if (a.y < 0 || a.y > pCanvas.height) a.vy *= -1;
+        pCtx.beginPath();
+        pCtx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        pCtx.fillStyle = 'rgba(0, 229, 255, 0.45)';
+        pCtx.fill();
+        for (let j = i + 1; j < particles.length; j++) {
+          const b = particles[j];
+          const dist = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dist < 130) {
+            pCtx.beginPath();
+            pCtx.moveTo(a.x, a.y);
+            pCtx.lineTo(b.x, b.y);
+            pCtx.strokeStyle = `rgba(255, 255, 255, ${0.08 * (1 - dist / 130)})`;
+            pCtx.lineWidth = 0.7;
+            pCtx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener('resize', initParticles);
+    initParticles();
+    animateParticles();
+
+    // Mobile Menu
+    const mobileMenu = document.getElementById('mobileMenu');
+    document.getElementById('menuBtn').addEventListener('click', () => mobileMenu.classList.add('open'));
+    document.getElementById('closeMenuBtn').addEventListener('click', () => mobileMenu.classList.remove('open'));
+    document.querySelectorAll('.m-link').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+    // Spotlight Hover
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+      });
+    });
+
+    // Filters
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    filterBtns.forEach(btn => btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      projectCards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.category !== f));
+    }));
+
+    // Case Studies
+    const caseStudies = {
+      aura: { category: "REAL ESTATE DEVELOPER", title: "Aura Skyline Estates", desc: "A luxury residential developer needed a web presence matching ₹4Cr+ penthouses to turn visitors into scheduled site visits.", stats: [{val:"3.8x",label:"Site Visits"},{val:"0.4s",label:"Page Speed"},{val:"42%",label:"Conversion"}], features: ["Interactive penthouse & villa floor plan switcher", "Built-in Home Loan EMI Calculator", "Gated PDF Brochure lead funnel", "Obsidian & Gold authority UI"] },
+      verve: { category: "HOTELS & LUXURY RESORTS", title: "The Elysian Cliff Resort", desc: "Built to eliminate 20% OTA commissions with an experiential direct suite booking journey.", stats: [{val:"₹18L+",label:"Direct Bookings"},{val:"0%",label:"OTA Fees"},{val:"3.1x",label:"Inquiries"}], features: ["Suite showcase with instant date availability", "Destination wedding & retreat inquiry funnel", "Local landmarks proximity guide", "Mobile-first sticky booking bar"] },
+      kronos: { category: "FLAGSHIP RETAIL SHOWROOM", title: "Kronos Flagship Studio", desc: "A multi-floor luxury showroom digital catalog driving high-value VIP in-store visits.", stats: [{val:"4.2x",label:"Store Footfall"},{val:"300+",label:"Catalog Items"},{val:"99/100",label:"Speed Score"}], features: ["Ultra-fast category filtering & lookbook", "VIP In-Store Appointment scheduler", "One-click product concierge inquiry", "B2B Architect & Designer portal"] }
+    };
+
+    const modal = document.getElementById('caseModal');
+    const cafeDemoOverlay = document.getElementById('cafeDemoOverlay');
+    const cafeDoorScreen = document.getElementById('cafeDoorScreen');
+
+    function launchCafeDemo() {
+      cafeDoorScreen.classList.remove('opening', 'entered');
+      cafeDemoOverlay.classList.add('active');
+      cafeDemoOverlay.scrollTop = 0;
+      document.body.classList.add('lock-scroll');
+    }
+    function openCafeDoors() {
+      cafeDoorScreen.classList.add('opening');
+      setTimeout(() => cafeDoorScreen.classList.add('entered'), 650);
+    }
+    function closeCafeDemo() {
+      cafeDemoOverlay.classList.remove('active');
+      document.body.classList.remove('lock-scroll');
+    }
+
+    document.getElementById('heroCafeDemoBtn').addEventListener('click', launchCafeDemo);
+    document.getElementById('openDoorsBtn').addEventListener('click', openCafeDoors);
+    document.getElementById('doorsClickArea').addEventListener('click', openCafeDoors);
+    document.getElementById('replayDoorsBtn').addEventListener('click', launchCafeDemo);
+    document.getElementById('closeCafeDemo').addEventListener('click', closeCafeDemo);
+    document.getElementById('exitFromDoorBtn').addEventListener('click', closeCafeDemo);
+    document.getElementById('hireFromCafeBtn').addEventListener('click', () => {
+      closeCafeDemo();
+      document.getElementById('estimate').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    projectCards.forEach(card => card.addEventListener('click', () => {
+      if (card.dataset.liveCafe === 'true') return launchCafeDemo();
+      const d = caseStudies[card.dataset.id];
+      if (!d) return;
+      document.getElementById('mCategory').textContent = d.category;
+      document.getElementById('mTitle').textContent = d.title;
+      document.getElementById('mDesc').textContent = d.desc;
+      document.getElementById('mStats').innerHTML = d.stats.map(s => `<div class="modal-stat-box"><strong>${s.val}</strong><span>${s.label}</span></div>`).join('');
+      document.getElementById('mFeatures').innerHTML = d.features.map(f => `<li>${f}</li>`).join('');
+      modal.classList.add('active');
+    }));
+
+    document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('active'));
+    document.getElementById('modalCta').addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
+
+    // Cafe Scenes
+    const cafeScenes = {
+      courtyard: { img: "https://images.unsplash.com/photo-1775360898461-9fc756e73b34?auto=format&fit=crop&w=1400&q=80", tag: "OPEN COURTYARD • FRESH BREEZE & CONVERSATIONS", title: "Slow Mornings Under An Open Sky.", desc: "Warm sunlight, gentle breeze rustling through terrace greenery, and unhurried conversations over freshly brewed artisan espresso." },
+      garden: { img: "https://images.unsplash.com/photo-1677465051718-2f53d97f403f?auto=format&fit=crop&w=1400&q=80", tag: "GARDEN PATIO • SHADED TREE CANOPY", title: "Breezy Garden Tables Beneath The Canopy.", desc: "Natural shade, cool wind drifting across stone pavers, and quiet open-air corners perfect for cold brews and deep talks." },
+      interior: { img: "https://images.unsplash.com/photo-1757413888443-579f283be22c?auto=format&fit=crop&w=1400&q=80", tag: "INDOOR LOUNGE • WARM ACOUSTIC AMBIANCE", title: "Step Inside The Cozy Espresso Lounge.", desc: "Soft amber pendant lighting, rich oak seating, and friends gathered around warm tables savoring fresh pour-overs." },
+      twilight: { img: "https://images.unsplash.com/photo-1772645521055-632a0d263d0a?auto=format&fit=crop&w=1400&q=80", tag: "EVENING TERRACE • STRING LIGHTS & COOL AIR", title: "Golden String Lights After Dusk.", desc: "As evening breeze settles in, glowing canopy lights turn our outdoor terrace into the city’s most inviting social spot." }
+    };
+    const cafeImg = document.getElementById('cafeSceneImg');
+    document.querySelectorAll('.scene-tab').forEach(tab => tab.addEventListener('click', () => {
+      document.querySelectorAll('.scene-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const s = cafeScenes[tab.dataset.scene];
+      if (!s) return;
+      cafeImg.style.opacity = '0.25';
+      setTimeout(() => {
+        cafeImg.src = s.img;
+        document.getElementById('cafeSceneTag').textContent = s.tag;
+        document.getElementById('cafeSceneTitle').textContent = s.title;
+        document.getElementById('cafeSceneDesc').textContent = s.desc;
+        cafeImg.style.opacity = '0.9';
+      }, 220);
+    }));
+
+    document.getElementById('cafeReserveForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const guest = document.getElementById('cafeGuestName').value.trim();
+      const seat = document.getElementById('cafeSeating').value;
+      const cnt = document.getElementById('cafeGuests').value;
+      const box = document.getElementById('cafeReserveSuccess');
+      box.innerHTML = `✅ <strong>Table Reserved for ${guest}!</strong> (${cnt} • ${seat}). This instant booking flow can be customized for your client's café.`;
+      box.classList.add('show');
+    });
+
+    // Estimator
+    document.querySelectorAll('#industryChips .select-chip').forEach(c => c.addEventListener('click', () => {
+      document.querySelectorAll('#industryChips .select-chip').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+    }));
+    document.querySelectorAll('#featureChips .select-chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('selected')));
+
+    let latestBrief = "";
+    document.getElementById('briefForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('clientName').value.trim();
+      const biz = document.getElementById('bizName').value.trim();
+      const contact = document.getElementById('clientContact').value.trim();
+      const ind = document.querySelector('#industryChips .select-chip.selected')?.dataset.val || 'Not Specified';
+      const feat = Array.from(document.querySelectorAll('#featureChips .select-chip.selected')).map(c => c.dataset.val).join(', ') || 'Bespoke Website';
+      const sub = `New Website Inquiry from ${biz} (${ind})`;
+      latestBrief = `Hello SV Studio,\n\nI would like to commission a custom website. Project details:\n\nClient Name: ${name}\nBrand / Business: ${biz}\nContact Info: ${contact}\nIndustry: ${ind}\nCapabilities: ${feat}\n\nPlease share your timeline and pricing proposal.`;
+      document.getElementById('formFeedback').classList.add('show');
+      window.location.href = `mailto:${STUDIO_EMAIL}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(latestBrief)}`;
+    });
+
+    document.getElementById('copyBriefBtn').addEventListener('click', () => {
+      if (!latestBrief) return;
+      navigator.clipboard.writeText(latestBrief).then(() => {
+        const b = document.getElementById('copyBriefBtn');
+        b.textContent = "✅ Copied! Send to neon.ssv01@gmail.com";
+        setTimeout(() => b.textContent = "📋 Copy Brief Text", 3000);
+      });
+    });
+
+    // Secret Brand Kit
+    let tapCount = 0, tapTimer;
+    const brandKitModal = document.getElementById('brandKitModal');
+    document.getElementById('secretBrandTrigger').addEventListener('click', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => tapCount = 0, 900);
+      if (tapCount >= 3) {
+        tapCount = 0;
+        drawSvLogos();
+        brandKitModal.classList.add('active');
+      }
+    });
+    document.getElementById('brandKitClose').addEventListener('click', () => brandKitModal.classList.remove('active'));
+
+    async function drawSvLogos() {
+      await document.fonts.ready;
+      const bc = document.getElementById('bannerCanvas'), bctx = bc.getContext('2d');
+      const bg = bctx.createLinearGradient(0,0,1200,630); bg.addColorStop(0,'#090a0f'); bg.addColorStop(1,'#040406');
+      bctx.fillStyle = bg; bctx.fillRect(0,0,1200,630);
+      bctx.strokeStyle = 'rgba(255,255,255,0.035)'; bctx.lineWidth = 1;
+      for(let x=0;x<1200;x+=60){bctx.beginPath();bctx.moveTo(x,0);bctx.lineTo(x,630);bctx.stroke();}
+      for(let y=0;y<630;y+=60){bctx.beginPath();bctx.moveTo(0,y);bctx.lineTo(1200,y);bctx.stroke();}
+      const glow = bctx.createRadialGradient(600,290,20,600,290,420); glow.addColorStop(0,'rgba(0,229,255,0.16)'); glow.addColorStop(1,'transparent');
+      bctx.fillStyle = glow; bctx.fillRect(0,0,1200,630);
+      bctx.strokeStyle = 'rgba(255,255,255,0.12)'; bctx.lineWidth = 2; bctx.strokeRect(36,36,1128,558);
+      bctx.font = '800 220px "Syne","Arial Black",sans-serif';
+      const wSV = bctx.measureText('SV').width, sx = 600-(wSV+36)/2;
+      const tg = bctx.createLinearGradient(sx,140,sx+wSV,350); tg.addColorStop(0,'#fff'); tg.addColorStop(0.65,'#cbd5e1'); tg.addColorStop(1,'#00e5ff');
+      bctx.fillStyle = tg; bctx.textBaseline = 'middle'; bctx.fillText('SV', sx, 275);
+      bctx.beginPath(); bctx.arc(sx+wSV+24,330,19,0,Math.PI*2); bctx.fillStyle='#00e5ff'; bctx.fill();
+      bctx.font = '500 22px "JetBrains Mono",monospace'; bctx.fillStyle='#9ca3af'; bctx.textAlign='center';
+      bctx.fillText('SV DIGITAL STUDIO  •  REAL ESTATE  •  RESORTS  •  CAFÉS', 600, 430);
+
+      const dc = document.getElementById('dpCanvas'), dctx = dc.getContext('2d');
+      dctx.fillStyle='#050507'; dctx.fillRect(0,0,512,512);
+      dctx.strokeStyle='rgba(0,229,255,0.32)'; dctx.lineWidth=6; dctx.strokeRect(20,20,472,472);
+      dctx.font='800 185px "Syne","Arial Black",sans-serif';
+      const dw = dctx.measureText('SV').width, dx = 256-(dw+28)/2;
+      const dg = dctx.createLinearGradient(dx,150,dx+dw,330); dg.addColorStop(0,'#fff'); dg.addColorStop(0.6,'#cbd5e1'); dg.addColorStop(1,'#00e5ff');
+      dctx.fillStyle=dg; dctx.textBaseline='middle'; dctx.fillText('SV', dx, 258);
+      dctx.beginPath(); dctx.arc(dx+dw+20,304,15,0,Math.PI*2); dctx.fillStyle='#00e5ff'; dctx.fill();
+    }
+    document.getElementById('dlBannerBtn').addEventListener('click', () => {
+      const a = document.createElement('a'); a.download = 'sv-whatsapp-banner.jpg';
+      a.href = document.getElementById('bannerCanvas').toDataURL('image/jpeg', 0.9); a.click();
+    });
+    document.getElementById('dlDpBtn').addEventListener('click', () => {
+      const a = document.createElement('a'); a.download = 'sv-logo-dp.png';
+      a.href = document.getElementById('dpCanvas').toDataURL('image/png'); a.click();
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.classList.remove('active'); brandKitModal.classList.remove('active'); closeCafeDemo(); } });
+    const obs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) en.target.classList.add('visible'); }), { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
